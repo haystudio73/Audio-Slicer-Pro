@@ -1,4 +1,4 @@
-﻿# 🎵 AudioSlicer Pro — Windows 11 Native Audio Tool
+﻿# 🎵 Audio Slicer Pro — Windows 11 Native Audio Tool
 
 > **Ứng dụng Windows 11 native** để cắt file audio thành từng đoạn 15 giây và chuyển đổi sang định dạng MP4 (audio-only video).
 
@@ -152,6 +152,3 @@ MIT License
 ## 🤝 Contributing
 
 Vui lòng đọc [.agent/PLANS.md](.agent/PLANS.md) và [.agent/WORKFLOW.md](.agent/WORKFLOW.md) trước khi đóng góp.
-"# Audio-Splliter-Pro" 
-"# Audio-Splliter-Pro" 
-"# Audio-Splliter-Pro" 
