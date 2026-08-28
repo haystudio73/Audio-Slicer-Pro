@@ -1,0 +1,104 @@
+<Page
+    x:Class="AudioSlicerPro.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:AudioSlicerPro.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+    </Page.Resources>
+
+    <ScrollViewer Padding="24">
+        <StackPanel MaxWidth="800" HorizontalAlignment="Left" Spacing="20">
+            <!-- Header -->
+            <TextBlock Text="{x:Bind ViewModel.Title, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+
+            <!-- Folder Settings -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="16">
+                    <!-- Temporary Folder -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{x:Bind ViewModel.LabelTmpFolder, Mode=OneWay}" FontWeight="Medium" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{x:Bind ViewModel.TmpFolderPath, Mode=TwoWay}" />
+                            <Button Grid.Column="1" Content="{x:Bind ViewModel.LabelBrowse, Mode=OneWay}" Click="OnBrowseTmpFolderClick" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Destination Folder MP4 -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{x:Bind ViewModel.LabelDestFolder, Mode=OneWay}" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{x:Bind ViewModel.DestFolderPath, Mode=TwoWay}" />
+                            <Button Grid.Column="1" Content="{x:Bind ViewModel.LabelBrowse, Mode=OneWay}" Click="OnBrowseDestFolderClick" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Destination Folder MP3 -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{x:Bind ViewModel.LabelMp3Folder, Mode=OneWay}" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{x:Bind ViewModel.Mp3DestFolderPath, Mode=TwoWay}" />
+                            <Button Grid.Column="1" Content="{x:Bind ViewModel.LabelBrowse, Mode=OneWay}" Click="OnBrowseMp3FolderClick" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Processing Parameters -->
+            <StackPanel Spacing="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <TextBlock Text="{x:Bind ViewModel.LabelAudioSlicingParams, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+
+                <!-- Segment Duration -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{x:Bind ViewModel.LabelSegmentDuration, Mode=OneWay}" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <NumberBox Value="{x:Bind ViewModel.SegmentDurationSeconds, Mode=TwoWay}" Minimum="1" Maximum="3600" SpinButtonPlacementMode="Inline" SmallChange="1" LargeChange="5" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+
+                <!-- Aspect Ratio Selector -->
+                <StackPanel Spacing="8">
+                    <TextBlock Text="{x:Bind ViewModel.LabelAspectRatio, Mode=OneWay}" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <ComboBox ItemsSource="{x:Bind ViewModel.AvailableAspectRatios}" SelectedItem="{x:Bind ViewModel.SelectedAspectRatio, Mode=TwoWay}" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+
+                <!-- Trim Silence Toggle -->
+                <ToggleSwitch Header="{x:Bind ViewModel.LabelTrimSilence, Mode=OneWay}" IsOn="{x:Bind ViewModel.TrimSilence, Mode=TwoWay}" />
+
+                <!-- Silence Threshold -->
+                <StackPanel Spacing="8" Visibility="{x:Bind ViewModel.TrimSilence, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="{x:Bind ViewModel.LabelSilenceThreshold, Mode=OneWay}" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <NumberBox Value="{x:Bind ViewModel.SilenceThresholdDb, Mode=TwoWay}" Minimum="-90" Maximum="-10" SpinButtonPlacementMode="Inline" SmallChange="5" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Localization Settings -->
+            <StackPanel Spacing="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <TextBlock Text="{x:Bind ViewModel.LabelLanguage, Mode=OneWay}" FontWeight="Medium" />
+                <ComboBox ItemsSource="{x:Bind ViewModel.AvailableLanguages}" SelectedItem="{x:Bind ViewModel.SelectedLanguage, Mode=TwoWay}" Width="200" />
+            </StackPanel>
+
+            <!-- Actions & Notification -->
+            <StackPanel Spacing="12" Orientation="Horizontal">
+                <Button Content="{x:Bind ViewModel.LabelSaveSettings, Mode=OneWay}" Command="{x:Bind ViewModel.SaveSettingsCommand}" Style="{ThemeResource AccentButtonStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" FontWeight="Medium" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

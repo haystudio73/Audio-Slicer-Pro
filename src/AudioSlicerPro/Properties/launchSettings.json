@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AudioSlicerPro (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AudioSlicerPro (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

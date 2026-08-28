@@ -1,0 +1,1 @@
+E:\Projects\01. Windows Native\MP3 tools\src\AudioSlicerPro\AudioSlicerPro.csproj;x64

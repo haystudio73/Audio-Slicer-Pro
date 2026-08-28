@@ -1,0 +1,228 @@
+<Page
+    x:Class="AudioSlicerPro.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:AudioSlicerPro.Models"
+    xmlns:converters="using:AudioSlicerPro.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Required">
+
+    <Page.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <converters:PlayingToBackgroundConverter x:Key="PlayingToBackgroundConverter" />
+        <converters:PlayingToForegroundConverter x:Key="PlayingToForegroundConverter" />
+        <converters:PlayingToIconConverter x:Key="PlayingToIconConverter" />
+        <converters:PlayingToTextConverter x:Key="PlayingToTextConverter" />
+    </Page.Resources>
+
+    <Grid Padding="24" RowSpacing="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="{x:Bind ViewModel.AppTitle, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Grid.Row="0" />
+
+        <!-- Drag & Drop / File Picker Area -->
+        <Grid Grid.Row="1" 
+              Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+              CornerRadius="12" 
+              Padding="28"
+              AllowDrop="True"
+              Drop="OnDrop"
+              DragOver="OnDragOver"
+              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+              BorderThickness="1">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+                <FontIcon Glyph="&#xE8B9;" FontSize="44" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                <TextBlock Text="{x:Bind ViewModel.LabelDropFile, Mode=OneWay}" 
+                           FontSize="18" FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" HorizontalAlignment="Center"/>
+                <Button Content="{x:Bind ViewModel.LabelBrowseFile, Mode=OneWay}" 
+                        Click="OnBrowseFileClick" 
+                        HorizontalAlignment="Center"
+                        Style="{ThemeResource AccentButtonStyle}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- File Info Display -->
+        <Border Grid.Row="2" 
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                CornerRadius="8" 
+                Padding="16" 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Visibility="{x:Bind ViewModel.SelectedAudioFile, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <FontIcon Glyph="&#xE8D6;" FontSize="32" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                <StackPanel Grid.Column="1" Spacing="4">
+                    <TextBlock Text="{x:Bind ViewModel.SelectedAudioFile.FileName, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <StackPanel Orientation="Horizontal" Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="{x:Bind ViewModel.LabelDuration, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="{x:Bind ViewModel.SelectedAudioFile.FormattedDuration, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="{x:Bind ViewModel.LabelSize, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            <TextBlock Text="{x:Bind ViewModel.SelectedAudioFile.FormattedSize, Mode=OneWay}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Middle Content Area: Processing Log & Output Files Preview Split Grid -->
+        <Grid Grid.Row="3" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Processing Log Panel (Left) -->
+            <Grid RowSpacing="8" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Bind ViewModel.LabelProcessingLog, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                <ScrollViewer Grid.Row="1" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="12" x:Name="LogScrollViewer">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.LogEntries, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <TextBlock Text="{x:Bind}" FontFamily="Consolas" FontSize="12" Foreground="{ThemeResource TextFillColorPrimaryBrush}" TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Output Files & Preview Panel (Right) -->
+            <Grid RowSpacing="8" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Panel Header with Open Folder Button -->
+                <Grid Grid.Row="0">
+                    <TextBlock Text="{x:Bind ViewModel.LabelOutputFiles, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                    <Button Content="{x:Bind ViewModel.LabelOpenFolder, Mode=OneWay}"
+                            Command="{x:Bind ViewModel.OpenOutputFolderCommand}"
+                            HorizontalAlignment="Right" />
+                </Grid>
+
+                <!-- Output File Items List -->
+                <Border Grid.Row="1" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.OutputFiles, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:OutputFileItem">
+                                    <Border Margin="0,0,0,6" 
+                                            Padding="10" 
+                                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                            CornerRadius="6"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="1">
+                                        <Grid ColumnSpacing="12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <FontIcon Glyph="&#xE8D6;" FontSize="20" VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{x:Bind FileName}" FontWeight="Medium" FontSize="13" Foreground="{ThemeResource TextFillColorPrimaryBrush}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{x:Bind FormattedSize}" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                            </StackPanel>
+                                            <!-- Play Button with Dynamic Playing State Styles -->
+                                            <Button Grid.Column="2" 
+                                                    Click="OnPlayOutputItemClick"
+                                                    Tag="{x:Bind}"
+                                                    ToolTipService.ToolTip="Nghe thử file này"
+                                                    Background="{x:Bind IsPlaying, Mode=OneWay, Converter={StaticResource PlayingToBackgroundConverter}}"
+                                                    Foreground="{x:Bind IsPlaying, Mode=OneWay, Converter={StaticResource PlayingToForegroundConverter}}">
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <FontIcon Glyph="{x:Bind IsPlaying, Mode=OneWay, Converter={StaticResource PlayingToIconConverter}}" FontSize="12" />
+                                                    <TextBlock Text="{x:Bind IsPlaying, Mode=OneWay, Converter={StaticResource PlayingToTextConverter}}" FontSize="12" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Built-in Audio Preview Player Card with File Info Header & Seekbar -->
+                <Border Grid.Row="2" 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="12"
+                        Visibility="{x:Bind ViewModel.SelectedOutputFile, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+                    <StackPanel Spacing="8">
+                        <!-- Currently Playing File Info Header -->
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE767;" FontSize="16" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                                <TextBlock Text="Đang nghe thử:" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                <TextBlock Text="{x:Bind ViewModel.SelectedOutputFile.FileName, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Foreground="{ThemeResource TextFillColorPrimaryBrush}" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.SelectedOutputFile.FormattedSize, Mode=OneWay}" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <!-- Player Transport Controls (Progress Bar / Seeker / Play-Pause) -->
+                        <MediaPlayerElement x:Name="AudioPreviewPlayer" 
+                                            AreTransportControlsEnabled="True" 
+                                            Height="60" 
+                                            AutoPlay="True" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Progress & Actions Footer -->
+        <StackPanel Grid.Row="4" Spacing="12">
+            <!-- Indeterminate progress shown during processing -->
+            <ProgressBar IsIndeterminate="True" 
+                         Height="6"
+                         Visibility="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}" />
+            <!-- Determinate progress shown when not running -->
+            <ProgressBar Value="{x:Bind ViewModel.OverallProgress, Mode=OneWay}" 
+                         Maximum="100" 
+                         Height="6"
+                         Visibility="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}" />
+            <Grid>
+                <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                    <Button Content="{x:Bind ViewModel.LabelStartProcessing, Mode=OneWay}" 
+                            Command="{x:Bind ViewModel.StartProcessingCommand}"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay, Converter={StaticResource BoolNegationConverter}}" />
+                    <Button Content="{x:Bind ViewModel.LabelCancel, Mode=OneWay}" 
+                            Command="{x:Bind ViewModel.CancelCommand}"
+                            IsEnabled="{x:Bind ViewModel.IsProcessing, Mode=OneWay}" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

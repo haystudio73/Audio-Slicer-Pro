@@ -1,0 +1,105 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="AudioSlicerPro.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:AudioSlicerPro.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <converters:BoolNegationConverter x:Key="BoolNegationConverter" />
+    </Page.Resources>
+
+    <ScrollViewer Padding="24">
+        <StackPanel MaxWidth="800" HorizontalAlignment="Left" Spacing="20">
+            <!-- Header -->
+            <TextBlock x:ConnectionId='2'                                              FontSize="28" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+
+            <!-- Folder Settings -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="16">
+                    <!-- Temporary Folder -->
+                    <StackPanel Spacing="8">
+                        <TextBlock x:ConnectionId='22'                                                       FontWeight="Medium" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:ConnectionId='23'                                                      />
+                            <Button x:ConnectionId='24' Grid.Column="1"                                                                                      />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Destination Folder MP4 -->
+                    <StackPanel Spacing="8">
+                        <TextBlock x:ConnectionId='19'                                                        FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:ConnectionId='20'                                                       />
+                            <Button x:ConnectionId='21' Grid.Column="1"                                                                                       />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Destination Folder MP3 -->
+                    <StackPanel Spacing="8">
+                        <TextBlock x:ConnectionId='16'                                                       FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:ConnectionId='17'                                                          />
+                            <Button x:ConnectionId='18' Grid.Column="1"                                                                                      />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Processing Parameters -->
+            <StackPanel Spacing="16" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <TextBlock x:ConnectionId='7'                                                                FontWeight="SemiBold" FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+
+                <!-- Segment Duration -->
+                <StackPanel Spacing="8">
+                    <TextBlock x:ConnectionId='14'                                                             FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <NumberBox x:ConnectionId='15'                                                                Minimum="1" Maximum="3600" SpinButtonPlacementMode="Inline" SmallChange="1" LargeChange="5" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+
+                <!-- Aspect Ratio Selector -->
+                <StackPanel Spacing="8">
+                    <TextBlock x:ConnectionId='12'                                                         FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <ComboBox x:ConnectionId='13'                                                                                                                           Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+
+                <!-- Trim Silence Toggle -->
+                <ToggleSwitch x:ConnectionId='8'                                                                                                              />
+
+                <!-- Silence Threshold -->
+                <StackPanel x:ConnectionId='9' Spacing="8"                                                                                                               >
+                    <TextBlock x:ConnectionId='10'                                                              FontWeight="Medium" Foreground="{ThemeResource TextFillColorPrimaryBrush}" />
+                    <NumberBox x:ConnectionId='11'                                                            Minimum="-90" Maximum="-10" SpinButtonPlacementMode="Inline" SmallChange="5" Width="200" HorizontalAlignment="Left" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Localization Settings -->
+            <StackPanel Spacing="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="16" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <TextBlock x:ConnectionId='5'                                                      FontWeight="Medium" />
+                <ComboBox x:ConnectionId='6'                                                                                                                     Width="200" />
+            </StackPanel>
+
+            <!-- Actions & Notification -->
+            <StackPanel Spacing="12" Orientation="Horizontal">
+                <Button x:ConnectionId='3'                                                                                                              Style="{ThemeResource AccentButtonStyle}" />
+                <TextBlock x:ConnectionId='4'                                                      VerticalAlignment="Center" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" FontWeight="Medium" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
+

@@ -1,0 +1,44 @@
+<Window
+    x:Class="AudioSlicerPro.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="AudioSlicer Pro">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Name="NavView" 
+                        ItemInvoked="OnNavViewItemInvoked"
+                        Loaded="OnNavViewLoaded"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        PaneDisplayMode="Left"
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="NavItemMain" Content="Cắt File Audio" Tag="MainPage" Icon="Audio" />
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="NavItemSettings" Content="Cài Đặt" Tag="SettingsPage" Icon="Setting" />
+            </NavigationView.FooterMenuItems>
+
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Frame x:Name="ContentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+                
+                <!-- Top Right Light/Dark Theme Switch Button -->
+                <Button x:Name="ThemeToggleButton"
+                        Click="OnThemeToggleClick"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,8,16,0"
+                        Width="38" Height="38"
+                        Padding="0"
+                        CornerRadius="19"
+                        ToolTipService.ToolTip="Chuyển giao diện Sáng / Tối"
+                        Style="{ThemeResource SubtleButtonStyle}">
+                    <FontIcon x:Name="ThemeIcon" Glyph="&#xE708;" FontSize="18" />
+                </Button>
+            </Grid>
+        </NavigationView>
+    </Grid>
+</Window>
