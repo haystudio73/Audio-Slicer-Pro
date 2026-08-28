@@ -8,6 +8,8 @@
 
 **AudioSlicer Pro** là ứng dụng Windows 11 thuần (WinUI 3 / Win32) cho phép người dùng:
 
+<img width="1246" height="745" alt="app v1" src="https://github.com/user-attachments/assets/5d5ef7c3-d593-422e-8b2b-636c8c89d236" />
+
 1. **Cắt file audio** (MP3, WAV, FLAC, AAC, OGG, …) thành các đoạn nhỏ có thời lượng **15 giây** mỗi đoạn.
 2. **Chuyển đổi** từng đoạn audio sang **file MP4 video** (audio-only, không có track video — chỉ có audio stream).
 3. **Quản lý thư mục**: chọn thư mục `tmp` để lưu file trung gian và thư mục đích sẽ tự động tạo theo tên file audio gốc.
@@ -27,6 +29,8 @@
 | 📊 Thanh tiến trình | Hiển thị tiến trình xử lý từng file |
 | 📝 Log hoạt động | Ghi log chi tiết từng bước xử lý |
 | ⚙️ Cài đặt bền vững | Lưu cài đặt vào file JSON (không mất sau khi tắt app) |
+
+<img width="1248" height="750" alt="app v2" src="https://github.com/user-attachments/assets/8dfedd90-bd0f-4482-a326-dba350590577" />
 
 ---
 
